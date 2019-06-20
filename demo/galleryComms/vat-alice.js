@@ -14,12 +14,14 @@ function makeAliceMaker(E, log) {
     make(gallery) {
       const alice = harden({
         splitTapFaucet() {
-          E(gallery)
-            .split(E(gallery).tapFaucet())
-            .then(({ useRightPayment }) => {
-              showPaymentBalance('useRight', useRightPayment);
-              E(gallery).changeColor(useRightPayment, 'black');
-            });
+          for (let i = 0; i < 50; i += 1) {
+            E(gallery)
+              .split(E(gallery).tapFaucet())
+              .then(({ useRightPayment }) => {
+                showPaymentBalance('useRight', useRightPayment);
+                E(gallery).changeColor(useRightPayment, 'black');
+              });
+          }
         },
       });
       return alice;
