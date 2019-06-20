@@ -36,6 +36,11 @@ function build(E, log) {
     const aliceP = E(aliceMaker).make(gallery.userFacet);
     await E(aliceP).doSellAndBuy();
   }
+  async function testSplitTapFaucet(aliceMaker, bobMaker, gallery) {
+    log('starting testSplitTapFaucet');
+    const aliceP = E(aliceMaker).make(gallery.userFacet);
+    await E(aliceP).splitTapFaucet();
+  }
 
   const obj0 = {
     async bootstrap(argv, vats) {
@@ -80,6 +85,13 @@ function build(E, log) {
           const bobMaker = await E(vats.bob).makeBobMaker();
           const gallery = makeGallery(E, log, stateChangeHandler, canvasSize);
           return testAliceSellsAndBuys(aliceMaker, bobMaker, gallery);
+        }
+        case 'splitTapFaucet': {
+          log('starting splitTapFaucet');
+          const aliceMaker = await E(vats.alice).makeAliceMaker();
+          const bobMaker = await E(vats.bob).makeBobMaker();
+          const gallery = makeGallery(E, log, stateChangeHandler, canvasSize);
+          return testSplitTapFaucet(aliceMaker, bobMaker, gallery);
         }
         default: {
           throw new Error(`unrecognized argument value ${argv[0]}`);

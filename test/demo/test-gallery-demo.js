@@ -129,3 +129,43 @@ test('run gallery demo aliceSellsAndBuys without SES', async t => {
   t.deepEquals(dump.log, expectedAliceSellsAndBuysLog);
   t.end();
 });
+
+const splitTapFaucetLog = [
+  '=> setup called',
+  'starting splitTapFaucet',
+  'starting testSplitTapFaucet',
+  'useRight balance {"label":{"issuer":{},"description":"pixelUseRights"},"quantity":[{"x":1,"y":4}]}',
+];
+
+test('split the returned value of tapFaucet with SES', async t => {
+  const dump = await main(true, 'demo/gallery', ['splitTapFaucet']);
+  t.deepEquals(dump.log, splitTapFaucetLog);
+  t.end();
+});
+
+test('split the returned value of tapFaucet without SES', async t => {
+  const dump = await main(false, 'demo/gallery', ['splitTapFaucet']);
+  t.deepEquals(dump.log, splitTapFaucetLog);
+  t.end();
+});
+
+const splitTapFaucetAcrossMachinesLog = [
+  '=> setup called',
+  '=> setup called',
+  'addEgress called with sender alice, index 0, valslot [object Object]',
+  'addIngress called with machineName gallery, index 0',
+  "=> the promise given by the call to alice.splitTapFaucet resolved to 'undefined'",
+  'useRight balance {"label":{"issuer":{},"description":"pixelUseRights"},"quantity":[{"x":1,"y":4}]}',
+];
+
+test('split the returned value of tapFaucet across machines with SES', async t => {
+  const dump = await main(true, 'demo/galleryComms', ['splitTapFaucet']);
+  t.deepEquals(dump.log, splitTapFaucetAcrossMachinesLog);
+  t.end();
+});
+
+test.only('split the returned value of tapFaucet across machines without SES', async t => {
+  const dump = await main(false, 'demo/galleryComms', ['splitTapFaucet']);
+  t.deepEquals(dump.log, splitTapFaucetAcrossMachinesLog);
+  t.end();
+});

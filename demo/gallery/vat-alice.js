@@ -243,6 +243,14 @@ function makeAliceMaker(E, log) {
           showPaymentBalance('alice pixel purse', pixelPurseP);
           showPaymentBalance('alice dust purse', dustPurseP);
         },
+        splitTapFaucet() {
+          E(gallery)
+            .split(E(gallery).tapFaucet())
+            .then(({ useRightPayment }) => {
+              showPaymentBalance('useRight', useRightPayment);
+              E(gallery).changeColor(useRightPayment, 'black');
+            });
+        },
       });
       return alice;
     },
